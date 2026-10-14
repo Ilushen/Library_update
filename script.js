@@ -19,11 +19,16 @@ function addBooktoLibrary(tittle,author,pages,read){
     myLibrary.push(book);
 }
 
+const div = document.createElement('div');
+div.setAttribute("id","Table");
 function createTable(){
-    const div = document.createElement('div');
-    div.setAttribute("id","Table");
+    
+    if (document.getElementById('tab')) {
+        div.removeChild(document.getElementById('tab'))
+    }
 
     const table = document.createElement('table');
+    table.setAttribute("id","tab");
 
     const tr = document.createElement('tr');
     const th1  = document.createElement('th');
@@ -83,7 +88,30 @@ function readArray(){
 
 }
 
+const showBtn = document.getElementById("show-dialog");
+const dialog = document.getElementById("dialog");
+const jsCloseBtn = dialog.querySelector("#submit");
 
+showBtn.addEventListener("click", () => {
+  dialog.showModal();
+});
+
+jsCloseBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  dialog.close();
+  addbooks();
+  createTable();
+
+});
+
+function addbooks(){
+    const title = document.getElementById('title');
+    const author = document.getElementById('author');
+    const pages = document.getElementById('pages');
+    const read = document.getElementById('read');
+    addBooktoLibrary(title.value,author.value,pages.value,read.value);
+
+}
 // Testing
 //book = new Books("Entre as Memorias Silenciasdas", "Ungulani Ba kha Khosa", 300, "Not Read Yet");
 //book.info();
