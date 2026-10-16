@@ -11,13 +11,25 @@ function Books(tittle, author, pages, read) {
         console.log(this.tittle + " by " + this.author + ", " + this.pages + ", " + this.read);
 
     }
+
 }
 
+Books.prototype.readstatus = function () {
+        console.log(this.read);
+        if (this.read == "Read")
+            this.read = "Not Read Yet";
+        else
+            this.read = "Read";
+
+        console.log(this.read);
+        createTable();
+    }
 
 function addBooktoLibrary(tittle, author, pages, read) {
     const book = new Books(tittle, author, pages, read);
     myLibrary.push(book);
 }
+
 
 const div = document.createElement('div');
 div.setAttribute("id", "Table");
@@ -54,7 +66,10 @@ function createTable() {
     const th6 = document.createElement('th');
     th6.textContent = "DELETE";
     tr.append(th6);
-    
+
+    const th7 = document.createElement('th');
+    th7.textContent = "READ STATUS";
+    tr.append(th7);
 
     table.appendChild(tr);
     div.appendChild(table);
@@ -84,16 +99,23 @@ function createTable() {
 
         const tddelete = document.createElement('td');
         const btn = document.createElement('button')
-        btn.textContent = "delete";
+        btn.textContent = "DELETE";
         btn.setAttribute("id", myLibrary[i].id);
         tddelete.appendChild(btn);
         trlinhas.appendChild(tddelete);
+
+        const tdread = document.createElement('td');
+        const btn1 = document.createElement('button')
+        btn1.textContent = "READ STATUS";
+        btn1.setAttribute("data-id", myLibrary[i].id);
+        tdread.appendChild(btn1);
+        trlinhas.appendChild(tdread);
 
         table.appendChild(trlinhas);
 
     }
     document.body.appendChild(div);
-    deletebooks()
+    deletebooks();
 }
 
 function readArray() {
@@ -143,9 +165,9 @@ function addbooks() {
 //book.info();
 
 addBooktoLibrary("Entre as Memorias Silenciasdas", "Ungulani Ba kha Khosa", 300, "Not Read Yet");
-addBooktoLibrary("BALADAS DE AMOR AO VENTO", "PAULINHA CHIZIANE", 500, "Read Yet");
+addBooktoLibrary("BALADAS DE AMOR AO VENTO", "PAULINHA CHIZIANE", 500, "Read");
 addBooktoLibrary("UALALAPI", "Ungulani Ba kha Khosa", 600, "Not Read Yet");
-addBooktoLibrary("VENTOS DO APOCALIPSE", "PAULINHA CHIZIANE", 800, "Read Yet");
+addBooktoLibrary("VENTOS DO APOCALIPSE", "PAULINHA CHIZIANE", 800, "Read");
 //console.log(myLibrary);
 
 //for(let i=0;i<myLibrary.length;i++){
@@ -154,26 +176,27 @@ addBooktoLibrary("VENTOS DO APOCALIPSE", "PAULINHA CHIZIANE", 800, "Read Yet");
 
 
 
-function deletebooks(){
+function deletebooks() {
 
     const buttons = document.querySelectorAll("button");
 
     // we use the .forEach method to iterate through each button
     buttons.forEach((button) => {
-    // and for each one we add a 'click' listener
-    button.addEventListener("click", () => {
-        console.log(button.id);
-        for (let i=0; i < myLibrary.length; i++)
-        {
-            if(button.id == myLibrary[i].id){
-                myLibrary.splice(i,1);
-                createTable();
-                
+        // and for each one we add a 'click' listener
+        button.addEventListener("click", () => {
+            for (let i = 0; i < myLibrary.length; i++) {
+                if (button.id == myLibrary[i].id) {
+                    myLibrary.splice(i, 1);
+                    createTable();
+
+                }
+                if(button.dataset.id == myLibrary[i].id){
+                    myLibrary[i].readstatus();
+                }
             }
-        }
-        
-        
-    });
+
+
+        });
     });
 
 }
